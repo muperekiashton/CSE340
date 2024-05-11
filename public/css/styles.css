@@ -98,3 +98,39 @@ img {
   margin-top: 5px;
   text-align: center;
 }
+
+.custom-vehicles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.vehicle {
+  width: calc(33.33% - 10px);
+  text-align: center;
+}
+
+.vehicle img {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.vehicle h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.vehicle p {
+  font-size: 16px;
+  color: #240101;
+}
+
+

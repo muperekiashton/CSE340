@@ -9,7 +9,8 @@ const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
-const static = require("./routes/static")
+const inventoryRoute = require("./routes/static")
+const baseController = require("./controllers/baseController")
 
 
 /* ***********************
@@ -18,16 +19,39 @@ const static = require("./routes/static")
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
+app.use(express.static("public"));
 
 /* ***********************
  * Routes
  *************************/
-app.use(static)
+
 
 //Index route 
-app.get("/", function(req, res){
-  res.render("index", {tittle: "Home"})
+app.get("/", baseController.buildHome)
+app.get("/custom", baseController.buildCustomPage);
+app.get("/sedan", baseController.buildSedanPage);
+app.get("/suv", baseController.buildSuvPage);
+app.get("/sport", baseController.buildSportPage);
+app.get("/truck", baseController.buildTruckPage);
+
+// Inventory routes
+app.use("/inv", inventoryRoute)
+
+/* ***********************
+* Express Error Handler
+* Place after all other middleware
+*************************/
+app.use(async (err, req, res, next) => {
+  let nav = await utilities.getNav()
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    nav
+  })
 })
+
+app.use(express.static("public/images"));
 
 /* ***********************
  * Local Server Information
